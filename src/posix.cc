@@ -9,8 +9,6 @@
 #include <syslog.h> // openlog, closelog, syslog, setlogmask
 #include <nan.h>
 
-#include <errno.h>
-
 using namespace v8;
 using namespace node;
 
@@ -66,7 +64,7 @@ NAN_METHOD(node_update_syslog_constants) {
   obj->Set(NanNew<String>("cron"), NanNew<Integer>(LOG_CRON));
   obj->Set(NanNew<String>("daemon"), NanNew<Integer>(LOG_DAEMON));
 #ifdef LOG_FTP
-    obj->Set(NanNew<String>("ftp"), NanNew<Integer>(LOG_FTP));
+  obj->Set(NanNew<String>("ftp"), NanNew<Integer>(LOG_FTP));
 #endif
   obj->Set(NanNew<String>("kern"), NanNew<Integer>(LOG_KERN));
   obj->Set(NanNew<String>("lpr"), NanNew<Integer>(LOG_LPR));
