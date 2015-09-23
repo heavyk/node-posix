@@ -13,40 +13,40 @@ using namespace v8;
 using namespace node;
 
 NAN_METHOD(node_chroot) {
-  if (args.Length() != 1) {
-    return NanThrowError("chroot: takes exactly one argument");
+  if (info.Length() != 1) {
+    return Nan::ThrowError("chroot: takes exactly one argument");
   }
 
-  if (!args[0]->IsString()) {
-    return NanThrowError("chroot: first argument must be a string");
+  if (!info[0]->IsString()) {
+    return Nan::ThrowError("chroot: first argument must be a string");
   }
 
-  String::Utf8Value dir_path(args[0]->ToString());
+  String::Utf8Value dir_path(info[0]->ToString());
 
   // proper order is to first chdir() and then chroot()
   if(chdir(*dir_path)) {
-    return NanThrowError(node::ErrnoException(errno));
+    return Nan::ThrowError(node::ErrnoException(errno));
   }
 
   if(chroot(*dir_path)) {
-    return NanThrowError(node::ErrnoException(errno));
+    return Nan::ThrowError(node::ErrnoException(errno));
   }
 
-  NanReturnUndefined();
+  return;
 }
 
 #define ADD_MASK_FLAG(name, flag) \
-  obj->Set(NanNew<String>(name), NanNew<Integer>(flag)); \
-  obj->Set(NanNew<String>("mask_" name), NanNew<Integer>(LOG_MASK(flag)));
+  obj->Set(Nan::New<String>(name).ToLocalChecked(), Nan::New<Integer>(flag)); \
+  obj->Set(Nan::New<String>("mask_" name).ToLocalChecked(), Nan::New<Integer>(LOG_MASK(flag)));
 
 NAN_METHOD(node_update_syslog_constants) {
-  NanScope();
+  Nan::HandleScope scope;
 
-  if((args.Length() != 1) || (!args[0]->IsObject())) {
-    return NanThrowError("invalid arguments");
+  if((info.Length() != 1) || (!info[0]->IsObject())) {
+    return Nan::ThrowError("invalid arguments");
   }
 
-  Local<Object> obj = args[0]->ToObject();
+  Local<Object> obj = info[0]->ToObject();
   ADD_MASK_FLAG("emerg", LOG_EMERG);
   ADD_MASK_FLAG("alert", LOG_ALERT);
   ADD_MASK_FLAG("crit", LOG_CRIT);
@@ -57,47 +57,47 @@ NAN_METHOD(node_update_syslog_constants) {
   ADD_MASK_FLAG("debug", LOG_DEBUG);
 
   // facility constants
-  obj->Set(NanNew<String>("auth"), NanNew<Integer>(LOG_AUTH));
+  obj->Set(Nan::New<String>("auth").ToLocalChecked(), Nan::New<Integer>(LOG_AUTH));
 #ifdef LOG_AUTHPRIV
-  obj->Set(NanNew<String>("authpriv"), NanNew<Integer>(LOG_AUTHPRIV));
+  obj->Set(Nan::New<String>("authpriv").ToLocalChecked(), Nan::New<Integer>(LOG_AUTHPRIV));
 #endif
-  obj->Set(NanNew<String>("cron"), NanNew<Integer>(LOG_CRON));
-  obj->Set(NanNew<String>("daemon"), NanNew<Integer>(LOG_DAEMON));
+  obj->Set(Nan::New<String>("cron").ToLocalChecked(), Nan::New<Integer>(LOG_CRON));
+  obj->Set(Nan::New<String>("daemon").ToLocalChecked(), Nan::New<Integer>(LOG_DAEMON));
 #ifdef LOG_FTP
-  obj->Set(NanNew<String>("ftp"), NanNew<Integer>(LOG_FTP));
+  obj->Set(Nan::New<String>("ftp").ToLocalChecked(), Nan::New<Integer>(LOG_FTP));
 #endif
-  obj->Set(NanNew<String>("kern"), NanNew<Integer>(LOG_KERN));
-  obj->Set(NanNew<String>("lpr"), NanNew<Integer>(LOG_LPR));
-  obj->Set(NanNew<String>("mail"), NanNew<Integer>(LOG_MAIL));
-  obj->Set(NanNew<String>("news"), NanNew<Integer>(LOG_NEWS));
-  obj->Set(NanNew<String>("syslog"), NanNew<Integer>(LOG_SYSLOG));
-  obj->Set(NanNew<String>("user"), NanNew<Integer>(LOG_USER));
-  obj->Set(NanNew<String>("uucp"), NanNew<Integer>(LOG_UUCP));
-  obj->Set(NanNew<String>("local0"), NanNew<Integer>(LOG_LOCAL0));
-  obj->Set(NanNew<String>("local1"), NanNew<Integer>(LOG_LOCAL1));
-  obj->Set(NanNew<String>("local2"), NanNew<Integer>(LOG_LOCAL2));
-  obj->Set(NanNew<String>("local3"), NanNew<Integer>(LOG_LOCAL3));
-  obj->Set(NanNew<String>("local4"), NanNew<Integer>(LOG_LOCAL4));
-  obj->Set(NanNew<String>("local5"), NanNew<Integer>(LOG_LOCAL5));
-  obj->Set(NanNew<String>("local6"), NanNew<Integer>(LOG_LOCAL6));
-  obj->Set(NanNew<String>("local7"), NanNew<Integer>(LOG_LOCAL7));
+  obj->Set(Nan::New<String>("kern").ToLocalChecked(), Nan::New<Integer>(LOG_KERN));
+  obj->Set(Nan::New<String>("lpr").ToLocalChecked(), Nan::New<Integer>(LOG_LPR));
+  obj->Set(Nan::New<String>("mail").ToLocalChecked(), Nan::New<Integer>(LOG_MAIL));
+  obj->Set(Nan::New<String>("news").ToLocalChecked(), Nan::New<Integer>(LOG_NEWS));
+  obj->Set(Nan::New<String>("syslog").ToLocalChecked(), Nan::New<Integer>(LOG_SYSLOG));
+  obj->Set(Nan::New<String>("user").ToLocalChecked(), Nan::New<Integer>(LOG_USER));
+  obj->Set(Nan::New<String>("uucp").ToLocalChecked(), Nan::New<Integer>(LOG_UUCP));
+  obj->Set(Nan::New<String>("local0").ToLocalChecked(), Nan::New<Integer>(LOG_LOCAL0));
+  obj->Set(Nan::New<String>("local1").ToLocalChecked(), Nan::New<Integer>(LOG_LOCAL1));
+  obj->Set(Nan::New<String>("local2").ToLocalChecked(), Nan::New<Integer>(LOG_LOCAL2));
+  obj->Set(Nan::New<String>("local3").ToLocalChecked(), Nan::New<Integer>(LOG_LOCAL3));
+  obj->Set(Nan::New<String>("local4").ToLocalChecked(), Nan::New<Integer>(LOG_LOCAL4));
+  obj->Set(Nan::New<String>("local5").ToLocalChecked(), Nan::New<Integer>(LOG_LOCAL5));
+  obj->Set(Nan::New<String>("local6").ToLocalChecked(), Nan::New<Integer>(LOG_LOCAL6));
+  obj->Set(Nan::New<String>("local7").ToLocalChecked(), Nan::New<Integer>(LOG_LOCAL7));
 
   // option constants
-  obj->Set(NanNew<String>("pid"), NanNew<Integer>(LOG_PID));
-  obj->Set(NanNew<String>("cons"), NanNew<Integer>(LOG_CONS));
-  obj->Set(NanNew<String>("ndelay"), NanNew<Integer>(LOG_NDELAY));
-  obj->Set(NanNew<String>("odelay"), NanNew<Integer>(LOG_ODELAY));
-  obj->Set(NanNew<String>("nowait"), NanNew<Integer>(LOG_NOWAIT));
+  obj->Set(Nan::New<String>("pid").ToLocalChecked(), Nan::New<Integer>(LOG_PID));
+  obj->Set(Nan::New<String>("cons").ToLocalChecked(), Nan::New<Integer>(LOG_CONS));
+  obj->Set(Nan::New<String>("ndelay").ToLocalChecked(), Nan::New<Integer>(LOG_NDELAY));
+  obj->Set(Nan::New<String>("odelay").ToLocalChecked(), Nan::New<Integer>(LOG_ODELAY));
+  obj->Set(Nan::New<String>("nowait").ToLocalChecked(), Nan::New<Integer>(LOG_NOWAIT));
 
-  NanReturnUndefined();
+  return;
 }
 
 
-void init(Handle<Object> exports) {
-  exports->Set(NanNew<String>("chroot"),
-    NanNew<FunctionTemplate>(node_chroot)->GetFunction());
-  exports->Set(NanNew<String>("update_syslog_constants"),
-    NanNew<FunctionTemplate>(node_update_syslog_constants)->GetFunction());
+void init(Local<Object> exports) {
+  exports->Set(Nan::New<String>("chroot").ToLocalChecked(),
+    Nan::New<FunctionTemplate>(node_chroot)->GetFunction());
+  exports->Set(Nan::New<String>("update_syslog_constants").ToLocalChecked(),
+    Nan::New<FunctionTemplate>(node_update_syslog_constants)->GetFunction());
 }
 
 NODE_MODULE(posix, init)

@@ -1,25 +1,47 @@
 {
-    "name": "posix",
-    "version": "1.0.4",
-    "description": "The missing POSIX system calls",
-    "keywords" : [
-        "posix", "rlimit", "getrlimit", "setrlimit", "ulimit", "setuid",
-        "setgid", "seteuid", "setegid", "chroot", "setreuid", "setregid",
-        "getpgrp", "setsid", "setpgid", "getpwnam", "getgrnam", "uid", "gid",
-        "initgroups", "syslog", "setlogmask", "gethostname", "sethostname"
-    ],
-    "homepage": "http://github.com/melor/node-posix",
-    "repository" : {
-        "type" : "git",
-        "url" : "git://github.com/melor/node-posix.git"
-    },
-    "author" : "Mika Eloranta <mel@ohmu.fi>",
-    "main" : "./lib/posix",
-    "dependencies" : {
-        "nan": "*"
-    },
-    "scripts" : {
-        "test" : "make test"
-    },
-    "engines" : { "node": ">= 0.6.0" }
+  "name": "posix",
+  "version": "1.0.4",
+  "description": "The missing POSIX system calls",
+  "keywords": [
+    "posix",
+    "rlimit",
+    "getrlimit",
+    "setrlimit",
+    "ulimit",
+    "setuid",
+    "setgid",
+    "seteuid",
+    "setegid",
+    "chroot",
+    "setreuid",
+    "setregid",
+    "getpgrp",
+    "setsid",
+    "setpgid",
+    "getpwnam",
+    "getgrnam",
+    "uid",
+    "gid",
+    "initgroups",
+    "syslog",
+    "setlogmask",
+    "gethostname",
+    "sethostname"
+  ],
+  "homepage": "http://github.com/melor/node-posix",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/melor/node-posix.git"
+  },
+  "author": "Mika Eloranta <mel@ohmu.fi>",
+  "main": "./lib/posix",
+  "dependencies": {
+    "nan": "^2.0.9"
+  },
+  "scripts": {
+    "test": "make test"
+  },
+  "engines": {
+    "node": ">= 0.6.0"
+  }
 }
